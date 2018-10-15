@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'exam.apps.ExamConfig',
     'users.apps.UsersConfig',
     'rest_framework',
+    'bluetie',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,5 @@ LOGIN_REDIRECT_URL = '/users/exam'
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'users.User'

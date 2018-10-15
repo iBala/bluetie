@@ -1,0 +1,8 @@
+2018-10-16 00:30:52.938 IST [22006] LOG:  listening on IPv6 address "::1", port 5432
+2018-10-16 00:30:52.938 IST [22006] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2018-10-16 00:30:52.944 IST [22006] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2018-10-16 00:30:52.978 IST [22007] LOG:  database system was shut down at 2018-10-16 00:30:43 IST
+2018-10-16 00:30:52.990 IST [22006] LOG:  database system is ready to accept connections
+2018-10-16 00:30:58.365 IST [22018] FATAL:  database "balakumaran" does not exist
+2018-10-16 00:34:29.241 IST [22061] ERROR:  role "patrick" does not exist
+2018-10-16 00:34:29.241 IST [22061] STATEMENT:  ALTER ROLE patrick CREATEDB;
