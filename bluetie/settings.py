@@ -11,6 +11,24 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
+from django.core.exceptions import ImproperlyConfigured
+
+#Loan Project Config
+with open(os.environ.get('CONFIG_PATH')) as f:
+    configs = json.loads(f.read())
+
+def get_env_var(setting, configs=configs):
+ try:
+     val = configs[setting]
+     if val == 'True':
+         val = True
+     elif val == 'False':
+         val = False
+     return val
+ except KeyError:
+     error_msg = "ImproperlyConfigured: Set {0} environment      variable".format(setting)
+     raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +38,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hf=iqfjl)j^7^s)grl%89g8f*_*_qknt-8-p+d6!39t42rn+f&'
+SECRET_KEY = get_env_var("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,12 +105,12 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'NAME': 'bluetie',
-        'USER': 'admin',
-        'PASSWORD': 'adminuser',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'USER': get_env_var("DATABASE_USER"),
+        'PASSWORD': get_env_var("DATABASE_PWD"),
+        'HOST': get_env_var("DATABASE_HOST"),
+        'PORT': get_env_var("DATABASE_PORT"),
     }
 }
 
