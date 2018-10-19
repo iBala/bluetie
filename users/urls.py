@@ -15,7 +15,7 @@ urlpatterns = [
     # path('exam/', login_required(exams.GetAllExamList.as_view())),
     # path('answer/', login_required(views.AnswerList.as_view())),
     path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
     # path('myexam/', login_required(exams.GetMyExamList.as_view()), name='My Exams'),
 
 ]

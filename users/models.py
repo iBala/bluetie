@@ -50,3 +50,27 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+class Question(BaseModel):
+    question_text = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    answer_type = models.CharField(max_length=100)
+    correct_answer = models.TextField()
+
+    def __str__(self):
+        return self.question_text
+
+class Exam(BaseModel):
+    reattempt_allowed = models.BooleanField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    questions = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.questions
+
+class Answer(BaseModel):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer_given = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.answer_given
