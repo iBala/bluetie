@@ -9,12 +9,12 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
-from base.models import BaseModel
+
 
 from .managers import UserManager
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class user(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
@@ -50,27 +50,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-class Question(BaseModel):
-    question_text = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    answer_type = models.CharField(max_length=100)
-    correct_answer = models.TextField()
+    class Meta:
+        permissions = (("admin", "Can access internal tools"),
+                       ("candidate", "Can take exams"),
+                       ("interviewer", "Can create questions and exams"))
 
-    def __str__(self):
-        return self.question_text
-
-class Exam(BaseModel):
-    reattempt_allowed = models.BooleanField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    questions = models.CharField(max_length=500)
-
-    def __str__(self):
-        return self.questions
-
-class Answer(BaseModel):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer_given = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.answer_given
