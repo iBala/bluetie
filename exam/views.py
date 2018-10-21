@@ -11,7 +11,7 @@ from rest_framework.reverse import reverse
 
 # Create your views here.
 # Question/
-class QuestionList(viewsets.ViewSet):
+class GetQuestionAPI(viewsets.ViewSet):
     @list_route(
         methods=['get', 'post'],
         url_path='question',
@@ -19,7 +19,8 @@ class QuestionList(viewsets.ViewSet):
         permission_classes=(IsLoggedInUser,),
     )
     def get(self, request):
-        query_set = question.objects.all()
+        # query_set = question.objects.all()
+        query_set = question.objects.filter(user = request.user)
         serializer = QuestionSerializer(query_set, many=True)
         return Response(serializer.data)
 
@@ -31,7 +32,7 @@ class QuestionList(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Exam/
-class ExamList(APIView):
+class GetExamAPI(viewsets.ViewSet):
     @list_route(
         methods=['get', 'post'],
         url_path='exam',
@@ -39,7 +40,8 @@ class ExamList(APIView):
         permission_classes=(IsLoggedInUser,),
     )
     def get(self, request):
-        query_set = exam.objects.all()
+        # query_set = exam.objects.all()
+        query_set = exam.objects.filter(user=request.user)
         serializer = ExamSerializer(query_set, many=True)
         return Response(serializer.data)
 
@@ -51,7 +53,7 @@ class ExamList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Answer/
-class AnswerList(APIView):
+class GetAnswerAPI(viewsets.ViewSet):
     @list_route(
         methods=['get', 'post'],
         url_path='answer',
@@ -59,7 +61,7 @@ class AnswerList(APIView):
         permission_classes=(IsLoggedInUser,),
     )
     def get(self, request):
-        query_set = answer.objects.all()
+        query_set = answer.objects.filter(user=request.user)
         serializer = AnswerSerializer(query_set, many=True)
         return Response(serializer.data)
 
