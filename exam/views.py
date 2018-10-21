@@ -31,6 +31,19 @@ class GetQuestionAPI(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GetQuestionWithId(viewsets.ViewSet):
+    @list_route(
+        methods=['get'],
+        url_path='question',
+        url_name='question',
+        permission_classes=(IsLoggedInUser,),
+    )
+    def get(self, request):
+        # query_set = question.objects.all()
+        query_set = question.objects.filter(user=request.user, id=request.data.id)
+        serializer = QuestionSerializer(query_set, many=True)
+        return Response(serializer.data)
+
 # Exam/
 class GetExamAPI(viewsets.ViewSet):
     @list_route(
@@ -52,6 +65,19 @@ class GetExamAPI(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GetExamWithId(viewsets.ViewSet):
+    @list_route(
+        methods=['get'],
+        url_path='exam',
+        url_name='exam',
+        permission_classes=(IsLoggedInUser,),
+    )
+    def get(self, request):
+        # query_set = exam.objects.all()
+        query_set = exam.objects.filter(user=request.user, id=request.data.id)
+        serializer = ExamSerializer(query_set, many=True)
+        return Response(serializer.data)
+
 # Answer/
 class GetAnswerAPI(viewsets.ViewSet):
     @list_route(
@@ -61,7 +87,7 @@ class GetAnswerAPI(viewsets.ViewSet):
         permission_classes=(IsLoggedInUser,),
     )
     def get(self, request):
-        query_set = answer.objects.filter(user=request.user)
+        query_set = answer.objects.filter(question=request.data.question)
         serializer = AnswerSerializer(query_set, many=True)
         return Response(serializer.data)
 
